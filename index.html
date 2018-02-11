@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 3</title>
+        <meta charset="utf-8">
+        <link href = "style.css" type = "text/css" rel = "stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet"> 
+    </head>
+    <body>
+        
+        <div id = "content">
+            <h3>Add movie to the list</h3>
+            <div id = "input">
+                <div id = "inputContent">
+                    <div id = "textInputs">
+                        <input id = "title" type = "text" placeholder = "Title">
+                        <input id = "director" type = "text" placeholder = "Director">
+                        <input id = "year" type = "text" placeholder = "Year">
+                    </div>
+                    <button id = "addButton">Add Movie</button>
+                </div>
+            </div>
+            <div id = "list">
+                <div id = "listDisplay">
+                    <ul id = "theList"></ul>
+                </div>
+            </div>
+            <div id = "sortButtonContent">
+                <div id = "buttonsDiv">
+                    <button id = "sortTitleBtn">Sort By Title</button>
+                    <button id = "sortDirectorBtn">Sort By Director</button>
+                    <button id = "sortYearBtn">Sort By Year</button>
+                </div>
+            </div>
+        </div>
+        <script src = "script.js"></script>
+    </body>
+</html>

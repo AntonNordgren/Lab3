@@ -1,0 +1,131 @@
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Bitter', serif;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+h3 {
+    position: relative;
+    top: 10px;
+    text-align: center;
+    color: #845f15;
+}
+
+#content {
+    position: relative;
+    width: 80%;
+    left: 10%;
+    right: 10%;
+    height: 800px;
+}
+
+#input {
+    position: relative;
+    width: 60%;
+    margin: auto;
+    top: 20px;
+    height: 200px;
+    background-color: salmon;
+    border-radius: 5px;
+}
+
+#inputContent {
+    position: relative;
+    height: 100%;
+}
+
+#textInputs {
+    position: relative;
+    width: 70%;
+    height: 80%;
+    top: 10%;
+    bottom: 10%;
+    display: flex;
+    flex-direction: column;
+}
+
+#textInputs input {
+    position: relative;
+    left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 30px;
+}
+
+#addButton {
+    position: absolute;
+    width: 100px;
+    right: 5%;
+    top: 40%;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #845f15;
+    color: white;
+}
+
+#list {
+    position: relative;
+    width: 60%;
+    height: 400px;
+    margin: auto;
+    background-color: salmon;
+    border-radius: 5px;
+    top: 40px;
+}
+
+#listDisplay {
+    position: relative;
+    width: 90%;
+    top: 5%;
+    margin: auto;
+    height: 90%;
+    border-radius: 5px;
+}
+
+.listItem {
+    position: relative;
+    width: 80%;
+    top: 10px;
+    left: 10%;
+    right: 10%;
+    height: 60px;
+    margin-bottom: 10px;
+    background-color: aliceblue;
+    border-radius: 5px;
+}
+
+.listItem div {
+    text-align: center;
+}
+
+#sortButtonContent {
+    position: relative;
+    top: 50px;
+    width: 60%;
+    height: 50px;
+    margin: auto;
+    background-color: salmon;
+    border-radius: 5px;
+}
+
+#buttonsDiv {
+    position: relative;
+    display: flex;
+    width: 90%;
+    height: 100%;
+    left: 5%;
+    right: 5%;
+}
+
+#buttonsDiv button {
+    flex: 1 1 auto;
+    border-radius: 10px;
+    background-color: #845f15;
+    color: white;
+    margin: 10px;
+}
