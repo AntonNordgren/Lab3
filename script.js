@@ -40,22 +40,30 @@ addButton.addEventListener('click', function() {
 });
 
 database.ref('/').on('value', function(data) {
-    while(theList.firstChild) {
-        theList.removeChild(theList.firstChild);
-    }
+    clearTheList();
     
     if(data.val() !== null) {
         let movies = data.val();
-        var keys = Object.keys(movies);
+        let keys = Object.keys(movies);
         
-        for( let i = 0; i < keys.length; i++) {
-            let k = keys[i];
+        let nrOfPages = Math.ceil(keys.length / 5);
+        console.log(nrOfPages);
+        
+        for( let j = 0; j < keys.length; j++) {
+            let k = keys[j];
             let title = movies[k].title;
             let director = movies[k].director;
             let year = movies[k].year;
 
             let newNode = document.createElement('li');
             let newListItem = document.createElement('div');
+            let removeButton = document.createElement('button');
+            removeButton.innerText = "Delete";
+            removeButton.className = "removeBtn";
+            removeButton.addEventListener('click', function(){
+                console.log(movies[k].title);
+            });
+            newListItem.appendChild(removeButton);
 
             let titleLabel = document.createElement('div');
             titleLabel.innerText = "Title: " + title;
@@ -90,26 +98,28 @@ sortYearBtn.addEventListener('click', function() {
 });
 
 function sortBy(value) {
-    while(theList.firstChild) {
-        theList.removeChild(theList.firstChild);
-    }
+    clearTheList();
     
     database.ref('/').orderByChild(value).once('value', function(data) {
-        
-        let theDataBase = data.val();
-        let objects = [];
-        for(let i = 0; i < theDataBase.length; i++) {
-            objects.push(theDataBase[i]);
-        }
-        
         data.forEach( child => {
+            let movies = data.val();
+            let keys = Object.keys(movies);
             let object = child.val();
             let title = object.title;
             let director = object.director;
             let year = object.year;
+            let key = child.key;
 
             let newNode = document.createElement('li');
             let newListItem = document.createElement('div');
+            
+            let removeButton = document.createElement('button');
+            removeButton.innerText = "Delete";
+            removeButton.className = "removeBtn";
+            removeButton.addEventListener('click', function(){
+                console.log(movies[key].title);
+            });
+            newListItem.appendChild(removeButton);
 
             let titleLabel = document.createElement('div');
             titleLabel.innerText = "Title: " + title;
@@ -128,4 +138,10 @@ function sortBy(value) {
             theList.appendChild(newListItem);
         })
     });
+}
+
+function clearTheList(){
+    while(theList.firstChild) {
+        theList.removeChild(theList.firstChild);
+    }
 }
