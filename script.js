@@ -47,7 +47,7 @@ database.ref('/').on('value', function(data) {
         let keys = Object.keys(movies);
         
         let nrOfPages = Math.ceil(keys.length / 5);
-        console.log(nrOfPages);
+        console.log("Nr of pages needed: " + nrOfPages);
         
         for( let j = 0; j < keys.length; j++) {
             let k = keys[j];
@@ -61,7 +61,7 @@ database.ref('/').on('value', function(data) {
             removeButton.innerText = "Delete";
             removeButton.className = "removeBtn";
             removeButton.addEventListener('click', function(){
-                console.log(movies[k].title);
+                database.ref('/' + k).remove();
             });
             newListItem.appendChild(removeButton);
 
@@ -117,7 +117,7 @@ function sortBy(value) {
             removeButton.innerText = "Delete";
             removeButton.className = "removeBtn";
             removeButton.addEventListener('click', function(){
-                console.log(movies[key].title);
+                database.ref('/' + key).remove();
             });
             newListItem.appendChild(removeButton);
 
