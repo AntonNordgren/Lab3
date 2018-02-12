@@ -12,7 +12,6 @@ body {
 
 h3 {
     position: relative;
-    top: 10px;
     text-align: center;
     color: #845f15;
 }
@@ -22,6 +21,7 @@ h3 {
     width: 80%;
     left: 10%;
     right: 10%;
+    top: 5px;
     height: 800px;
 }
 
@@ -29,7 +29,6 @@ h3 {
     position: relative;
     width: 60%;
     margin: auto;
-    top: 20px;
     height: 200px;
     background-color: salmon;
     border-radius: 5px;
@@ -76,7 +75,7 @@ h3 {
     margin: auto;
     background-color: salmon;
     border-radius: 5px;
-    top: 40px;
+    top: 5px;
 }
 
 #listDisplay {
@@ -107,7 +106,7 @@ h3 {
 
 #sortButtonContent {
     position: relative;
-    top: 50px;
+    top: 10px;
     width: 60%;
     height: 50px;
     margin: auto;
