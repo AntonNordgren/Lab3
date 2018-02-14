@@ -7,13 +7,13 @@
 }
 
 body {
-    background-color: aliceblue;
+    background-color: bisque;
 }
 
 h3 {
     position: relative;
     text-align: center;
-    color: #845f15;
+    color: #d80a48;
 }
 
 #content {
@@ -64,7 +64,7 @@ h3 {
     top: 40%;
     border-radius: 5px;
     padding: 10px;
-    background-color: #845f15;
+    background-color: #d80a48;
     color: white;
 }
 
@@ -126,7 +126,7 @@ h3 {
 #buttonsDiv button {
     flex: 1 1 auto;
     border-radius: 10px;
-    background-color: #845f15;
+    background-color: #d80a48;
     color: white;
     margin: 10px;
 }
@@ -136,7 +136,7 @@ h3 {
     font-size: .7em;
     height: 40px;
     border-radius: 10px;
-    background-color: #845f15;
+    background-color: #d80a48;
     color: white;
     right: 10px;
     top: 10px;

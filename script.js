@@ -20,6 +20,11 @@ let theList         = document.getElementById("theList");
 let sortTitleBtn    = document.getElementById("sortTitleBtn");
 let sortDirectorBtn = document.getElementById("sortDirectorBtn");
 let sortYearButton  = document.getElementById("sortYearBtn");
+let nextBtn         = document.getElementById("nextBtn");
+let prevBtn         = document.getElementById("prevBtn");
+
+let currentPage = 0;
+let sortByChild = "title";
 
 addButton.addEventListener('click', function() {
     let title    = titleInput.value;
@@ -40,48 +45,7 @@ addButton.addEventListener('click', function() {
 });
 
 database.ref('/').on('value', function(data) {
-    clearTheList();
-    
-    if(data.val() !== null) {
-        let movies = data.val();
-        let keys = Object.keys(movies);
-        
-        let nrOfPages = Math.ceil(keys.length / 5);
-        console.log("Nr of pages needed: " + nrOfPages);
-        
-        for( let j = 0; j < keys.length; j++) {
-            let k = keys[j];
-            let title = movies[k].title;
-            let director = movies[k].director;
-            let year = movies[k].year;
-
-            let newNode = document.createElement('li');
-            let newListItem = document.createElement('div');
-            let removeButton = document.createElement('button');
-            removeButton.innerText = "Delete";
-            removeButton.className = "removeBtn";
-            removeButton.addEventListener('click', function(){
-                database.ref('/' + k).remove();
-            });
-            newListItem.appendChild(removeButton);
-
-            let titleLabel = document.createElement('div');
-            titleLabel.innerText = "Title: " + title;
-            newListItem.appendChild(titleLabel);
-
-            let directorLabel = document.createElement('div');
-            directorLabel.innerText = "Director: " + director;
-            newListItem.appendChild(directorLabel);
-
-            let yearLabel = document.createElement('div');
-            yearLabel.innerText = "Year: " + year;
-            newListItem.appendChild(yearLabel);
-
-            newListItem.className = "listItem";
-            newNode.appendChild(newListItem);
-            theList.appendChild(newListItem);
-        }
-    }
+    updateList();
 });
 
 sortTitleBtn.addEventListener('click', function() {
@@ -98,46 +62,79 @@ sortYearBtn.addEventListener('click', function() {
 });
 
 function sortBy(value) {
-    clearTheList();
-    
-    database.ref('/').orderByChild(value).once('value', function(data) {
-        data.forEach( child => {
-            let movies = data.val();
-            let keys = Object.keys(movies);
-            let object = child.val();
-            let title = object.title;
-            let director = object.director;
-            let year = object.year;
-            let key = child.key;
+    currentPage = 0;
+    sortByChild = value;
+    updateList();
+}
 
-            let newNode = document.createElement('li');
-            let newListItem = document.createElement('div');
-            
-            let removeButton = document.createElement('button');
-            removeButton.innerText = "Delete";
-            removeButton.className = "removeBtn";
-            removeButton.addEventListener('click', function(){
-                database.ref('/' + key).remove();
-            });
-            newListItem.appendChild(removeButton);
-
-            let titleLabel = document.createElement('div');
-            titleLabel.innerText = "Title: " + title;
-            newListItem.appendChild(titleLabel);
-
-            let directorLabel = document.createElement('div');
-            directorLabel.innerText = "Director: " + director;
-            newListItem.appendChild(directorLabel);
-
-            let yearLabel = document.createElement('div');
-            yearLabel.innerText = "Year: " + year;
-            newListItem.appendChild(yearLabel);
-
-            newListItem.className = "listItem";
-            newNode.appendChild(newListItem);
-            theList.appendChild(newListItem);
-        })
+function updateList() {
+    database.ref('/')
+        .orderByChild(sortByChild)
+        .once('value',function(data){
+        clearTheList();
+        addAllToList(data);
     });
+}
+
+function addAllToList(data) {
+    if(data.val() !== null) {
+        let listOfMovies = [];
+        let listOfKeys = [];
+        data.forEach( child => {
+            listOfMovies.push(child.val());
+            listOfKeys.push(child.key);
+        })
+        let startAt = currentPage * 5;
+        let endAt = startAt + 5;
+        for(let i = startAt; i < endAt && i < listOfMovies.length; i++) {
+            addToList(listOfMovies[i], listOfKeys[i]);
+        }
+    }
+}
+
+nextBtn.addEventListener('click', function() {
+    currentPage++;
+    updateList();
+});
+
+prevBtn.addEventListener('click', function() {
+    if(currentPage !== 0) {
+        currentPage--;
+        updateList();
+    }
+});
+
+function addToList(child, key) {
+    let title = child.title;
+    let director = child.director;
+    let year = child.year;
+    
+    let newNode = document.createElement('li');
+    let newListItem = document.createElement('div');
+
+    let removeButton = document.createElement('button');
+    removeButton.innerText = "Delete";
+    removeButton.className = "removeBtn";
+    removeButton.addEventListener('click', function(){
+        database.ref('/' + key).remove();
+    });
+    newListItem.appendChild(removeButton);
+
+    let titleLabel = document.createElement('div');
+    titleLabel.innerText = "Title: " + title;
+    newListItem.appendChild(titleLabel);
+
+    let directorLabel = document.createElement('div');
+    directorLabel.innerText = "Director: " + director;
+    newListItem.appendChild(directorLabel);
+
+    let yearLabel = document.createElement('div');
+    yearLabel.innerText = "Year: " + year;
+    newListItem.appendChild(yearLabel);
+
+    newListItem.className = "listItem";
+    newNode.appendChild(newListItem);
+    theList.appendChild(newListItem);
 }
 
 function clearTheList(){
