@@ -24,6 +24,7 @@ let nextBtn         = document.getElementById("nextBtn");
 let prevBtn         = document.getElementById("prevBtn");
 
 let currentPage = 0;
+let lastPage = 0;
 let sortByChild = "title";
 
 addButton.addEventListener('click', function() {
@@ -84,6 +85,8 @@ function addAllToList(data) {
             listOfMovies.push(child.val());
             listOfKeys.push(child.key);
         })
+        lastPage = Math.ceil(listOfMovies.length / 5);
+        console.log("Last Page: " + lastPage);
         let startAt = currentPage * 5;
         let endAt = startAt + 5;
         for(let i = startAt; i < endAt && i < listOfMovies.length; i++) {
@@ -93,8 +96,10 @@ function addAllToList(data) {
 }
 
 nextBtn.addEventListener('click', function() {
-    currentPage++;
-    updateList();
+    if(currentPage + 1 < lastPage){
+        currentPage++;
+        updateList();
+    }
 });
 
 prevBtn.addEventListener('click', function() {
