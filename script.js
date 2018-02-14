@@ -22,10 +22,13 @@ let sortDirectorBtn = document.getElementById("sortDirectorBtn");
 let sortYearButton  = document.getElementById("sortYearBtn");
 let nextBtn         = document.getElementById("nextBtn");
 let prevBtn         = document.getElementById("prevBtn");
+let ascendBtn       = document.getElementById("ascendBtn");
+let descendBtn      = document.getElementById("descendBtn");
 
 let currentPage = 0;
 let lastPage = 0;
 let sortByChild = "title";
+let ascendOrder = true;
 
 addButton.addEventListener('click', function() {
     let title    = titleInput.value;
@@ -85,8 +88,13 @@ function addAllToList(data) {
             listOfMovies.push(child.val());
             listOfKeys.push(child.key);
         })
+        
+        if(ascendOrder == false){
+            listOfMovies.reverse();
+            listOfKeys.reverse();
+        }
+        
         lastPage = Math.ceil(listOfMovies.length / 5);
-        console.log("Last Page: " + lastPage);
         let startAt = currentPage * 5;
         let endAt = startAt + 5;
         for(let i = startAt; i < endAt && i < listOfMovies.length; i++) {
@@ -107,6 +115,16 @@ prevBtn.addEventListener('click', function() {
         currentPage--;
         updateList();
     }
+});
+
+ascendBtn.addEventListener('click', function() {
+    ascendOrder = true;
+    updateList();
+});
+
+descendBtn.addEventListener('click', function() {
+    ascendOrder = false;
+    updateList();
 });
 
 function addToList(child, key) {
