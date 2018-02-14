@@ -134,6 +134,16 @@ function addToList(child, key) {
     
     let newNode = document.createElement('li');
     let newListItem = document.createElement('div');
+    
+    let titleInput = document.createElement('input');
+    titleInput.style.display = 'none';
+    newListItem.appendChild(titleInput);
+    let directorInput = document.createElement('input');
+    directorInput.style.display = 'none';
+    newListItem.appendChild(directorInput);
+    let yearInput = document.createElement('input');
+    yearInput.style.display = 'none';
+    newListItem.appendChild(yearInput);
 
     let removeButton = document.createElement('button');
     removeButton.innerText = "Delete";
@@ -154,6 +164,49 @@ function addToList(child, key) {
     let yearLabel = document.createElement('div');
     yearLabel.innerText = "Year: " + year;
     newListItem.appendChild(yearLabel);
+    
+    let editButton = document.createElement('button');
+    editButton.innerText = "Edit";
+    editButton.className = "editButton";
+    editButton.addEventListener('click', function() {
+        titleInput.style.display = 'block';
+        titleInput.value = title;
+        directorInput.style.display = 'block';
+        directorInput.value = director;
+        yearInput.style.display = 'block';
+        yearInput.value = year;
+        titleLabel.style.display = 'none';
+        directorLabel.style.display = 'none';
+        yearLabel.style.display = 'none';
+        changeBtn.style.display = 'block';
+        editButton.style.display = 'none';
+    });
+    newListItem.appendChild(editButton);
+    
+    let changeBtn = document.createElement('button');
+    changeBtn.innerText = "Update";
+    changeBtn.className = "changeButton";
+    changeBtn.style.display = 'none';
+    changeBtn.addEventListener('click', function() {
+        titleInput.style.display = 'none';
+        directorInput.style.display = 'none';
+        yearInput.style.display = 'none';
+        titleLabel.style.display = 'block';
+        directorLabel.style.display = 'block';
+        yearLabel.style.display = 'block';
+        changeBtn.style.display = 'none';
+        editButton.style.display = 'block';
+        
+        let editedMovie = {
+            title : titleInput.value,
+            director : directorInput.value,
+            year : yearInput.value
+        }
+        
+        database.ref('/' + key).set(editedMovie);
+        
+    });
+    newListItem.appendChild(changeBtn);
 
     newListItem.className = "listItem";
     newNode.appendChild(newListItem);
