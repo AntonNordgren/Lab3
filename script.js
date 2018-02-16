@@ -70,7 +70,8 @@ sortYearBtn.addEventListener('click', function() {
 });
 
 searchBtn.addEventListener('click', function(){
-    searchValue = searchInput.value;
+    searchValue = searchInput.value.toUpperCase();
+    console.log(searchValue);
     updateList();
 });
 
@@ -96,8 +97,9 @@ function addAllToList(data) {
         
         if(!searchValue == ""){
             data.forEach( child => {
-                if(child.val().title.includes(searchValue) || child.val().director.includes(searchValue) ||
-                   child.val().year.includes(searchValue)) {
+                if(child.val().title.toUpperCase().includes(searchValue) ||
+                   child.val().director.toUpperCase().includes(searchValue) ||
+                   child.val().year.toUpperCase().includes(searchValue)) {
                     listOfMovies.push(child.val());
                     listOfKeys.push(child.key);
                 }
