@@ -11,24 +11,27 @@ var config = {
 firebase.initializeApp(config);
 const database = firebase.database();
 
-let addButton       = document.getElementById('addButton');
-let titleInput      = document.getElementById("title");
-let directorInput   = document.getElementById("director");
-let yearInput       = document.getElementById("year");
-let listDisplay     = document.getElementById("listDisplay");
-let theList         = document.getElementById("theList");
-let sortTitleBtn    = document.getElementById("sortTitleBtn");
-let sortDirectorBtn = document.getElementById("sortDirectorBtn");
-let sortYearButton  = document.getElementById("sortYearBtn");
-let nextBtn         = document.getElementById("nextBtn");
-let prevBtn         = document.getElementById("prevBtn");
-let ascendBtn       = document.getElementById("ascendBtn");
-let descendBtn      = document.getElementById("descendBtn");
+let addButton        = document.getElementById('addButton');
+let titleInput       = document.getElementById("title");
+let directorInput    = document.getElementById("director");
+let yearInput        = document.getElementById("year");
+let listDisplay      = document.getElementById("listDisplay");
+let theList          = document.getElementById("theList");
+let sortTitleBtn     = document.getElementById("sortTitleBtn");
+let sortDirectorBtn  = document.getElementById("sortDirectorBtn");
+let sortYearButton   = document.getElementById("sortYearBtn");
+let nextBtn          = document.getElementById("nextBtn");
+let prevBtn          = document.getElementById("prevBtn");
+let ascendBtn        = document.getElementById("ascendBtn");
+let descendBtn       = document.getElementById("descendBtn");
+let searchBtn        = document.getElementById("searchBtn");
+let searchInput      = document.getElementById("searchInput");
 
 let currentPage = 0;
 let lastPage = 0;
 let sortByChild = "title";
 let ascendOrder = true;
+let searchValue = "";
 
 addButton.addEventListener('click', function() {
     let title    = titleInput.value;
@@ -44,6 +47,7 @@ addButton.addEventListener('click', function() {
             director : director,
             year : year
         };
+        
         database.ref('/').push(newMovie);
     }
 });
@@ -65,6 +69,11 @@ sortYearBtn.addEventListener('click', function() {
     sortBy('year');
 });
 
+searchBtn.addEventListener('click', function(){
+    searchValue = searchInput.value;
+    updateList();
+});
+
 function sortBy(value) {
     currentPage = 0;
     sortByChild = value;
@@ -84,10 +93,22 @@ function addAllToList(data) {
     if(data.val() !== null) {
         let listOfMovies = [];
         let listOfKeys = [];
-        data.forEach( child => {
-            listOfMovies.push(child.val());
-            listOfKeys.push(child.key);
-        })
+        
+        if(!searchValue == ""){
+            data.forEach( child => {
+                if(child.val().title.includes(searchValue) || child.val().director.includes(searchValue) ||
+                   child.val().year.includes(searchValue)) {
+                    listOfMovies.push(child.val());
+                    listOfKeys.push(child.key);
+                }
+            })
+        }
+        else {
+            data.forEach( child => {
+                listOfMovies.push(child.val());
+                listOfKeys.push(child.key);
+            })
+        }
         
         if(ascendOrder == false){
             listOfMovies.reverse();
