@@ -33,6 +33,8 @@ let sortByChild = "title";
 let ascendOrder = true;
 let searchValue = "";
 
+let listOfMovies = [];
+
 addButton.addEventListener('click', function() {
     let title    = titleInput.value;
     let director = directorInput.value;
@@ -71,7 +73,8 @@ sortYearBtn.addEventListener('click', function() {
 
 searchBtn.addEventListener('click', function(){
     searchValue = searchInput.value.toUpperCase();
-    updateList();
+    clearTheList();
+    addAllToList(listOfMovies);
 });
 
 function sortBy(value) {
@@ -85,41 +88,43 @@ function updateList() {
         .orderByChild(sortByChild)
         .once('value',function(data){
         clearTheList();
-        addAllToList(data);
+        addToArray(data);
+        addAllToList(listOfMovies);
     });
 }
 
-function addAllToList(data) {
-    if(data.val() !== null) {
-        let listOfMovies = [];
-        let listOfKeys = [];
-        
+function addToArray(data) {
+    listOfMovies = [];
+    data.forEach(entry => {
+        let movie = {
+            title : entry.val().title,
+            director : entry.val().director,
+            year : entry.val().year,
+            key : entry.key
+        }
+        listOfMovies.push(movie);
+    });
+    
+}
+
+function addAllToList(listOfMovies) {
+    if(listOfMovies !== null) {
         if(!searchValue == ""){
-            data.forEach( child =>
-                child.val().title.toUpperCase().includes(searchValue) ||
-                child.val().director.toUpperCase().includes(searchValue) ||
-                child.val().year.toUpperCase().includes(searchValue) ? (listOfMovies.push(child.val()), listOfKeys.push(child.key)) : false );
+            listOfMovies = listOfMovies.filter( child =>
+                child.title.toUpperCase().includes(searchValue) ||
+                child.director.toUpperCase().includes(searchValue) ||
+                child.year.toUpperCase().includes(searchValue));
         }
-        else {
-            data.forEach( child => {
-                listOfMovies.push(child.val());
-                listOfKeys.push(child.key);
-            })
-        }
-        
-        
-        console.log(listOfMovies);
         
         if(ascendOrder == false){
             listOfMovies.reverse();
-            listOfKeys.reverse();
         }
         
         lastPage = Math.ceil(listOfMovies.length / 5);
         let startAt = currentPage * 5;
         let endAt = startAt + 5;
         for(let i = startAt; i < endAt && i < listOfMovies.length; i++) {
-            addToList(listOfMovies[i], listOfKeys[i]);
+            addToList(listOfMovies[i]);
         }
     }
 }
@@ -127,31 +132,36 @@ function addAllToList(data) {
 nextBtn.addEventListener('click', function() {
     if(currentPage + 1 < lastPage){
         currentPage++;
-        updateList();
+        clearTheList();
+        addAllToList(listOfMovies);
     }
 });
 
 prevBtn.addEventListener('click', function() {
     if(currentPage !== 0) {
         currentPage--;
-        updateList();
+        clearTheList();
+        addAllToList(listOfMovies);
     }
 });
 
 ascendBtn.addEventListener('click', function() {
     ascendOrder = true;
-    updateList();
+    clearTheList();
+    addAllToList(listOfMovies);
 });
 
 descendBtn.addEventListener('click', function() {
     ascendOrder = false;
-    updateList();
+    clearTheList();
+    addAllToList(listOfMovies);
 });
 
-function addToList(child, key) {
+function addToList(child) {
     let title = child.title;
     let director = child.director;
     let year = child.year;
+    let key = child.key;
     
     let newNode = document.createElement('li');
     let newListItem = document.createElement('div');
