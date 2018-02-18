@@ -71,7 +71,6 @@ sortYearBtn.addEventListener('click', function() {
 
 searchBtn.addEventListener('click', function(){
     searchValue = searchInput.value.toUpperCase();
-    console.log(searchValue);
     updateList();
 });
 
@@ -96,14 +95,10 @@ function addAllToList(data) {
         let listOfKeys = [];
         
         if(!searchValue == ""){
-            data.forEach( child => {
-                if(child.val().title.toUpperCase().includes(searchValue) ||
-                   child.val().director.toUpperCase().includes(searchValue) ||
-                   child.val().year.toUpperCase().includes(searchValue)) {
-                    listOfMovies.push(child.val());
-                    listOfKeys.push(child.key);
-                }
-            })
+            data.forEach( child =>
+                child.val().title.toUpperCase().includes(searchValue) ||
+                child.val().director.toUpperCase().includes(searchValue) ||
+                child.val().year.toUpperCase().includes(searchValue) ? (listOfMovies.push(child.val()), listOfKeys.push(child.key)) : false );
         }
         else {
             data.forEach( child => {
@@ -111,6 +106,9 @@ function addAllToList(data) {
                 listOfKeys.push(child.key);
             })
         }
+        
+        
+        console.log(listOfMovies);
         
         if(ascendOrder == false){
             listOfMovies.reverse();
