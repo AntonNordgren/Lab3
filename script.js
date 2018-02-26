@@ -24,8 +24,7 @@ let nextBtn          = document.getElementById("nextBtn");
 let prevBtn          = document.getElementById("prevBtn");
 let ascendBtn        = document.getElementById("ascendBtn");
 let descendBtn       = document.getElementById("descendBtn");
-let searchBtn        = document.getElementById("searchBtn");
-let searchInput      = document.getElementById("searchInput");
+let sortByBtn        = document.getElementById("sortByBtn");
 
 let currentPage = 0;
 let lastPage = 0;
@@ -34,6 +33,16 @@ let ascendOrder = true;
 let searchValue = "";
 
 let listOfMovies = [];
+
+let selectedButtonColor = "#3a1907";
+
+sortTitleBtn.disabled = true;
+sortDirectorBtn.disabled = false;
+sortYearBtn.disabled = false;
+sortTitleBtn.style.backgroundColor = selectedButtonColor;
+sortDirectorBtn.style.backgroundColor = "#d80a48";
+sortYearBtn.style.backgroundColor = "#d80a48";
+
 
 addButton.addEventListener('click', function() {
     let title    = titleInput.value;
@@ -60,15 +69,39 @@ database.ref('/').on('value', function(data) {
 
 sortTitleBtn.addEventListener('click', function() {
     sortBy('title');
+    sortTitleBtn.disabled = true;
+
+    sortDirectorBtn.disabled = false;
+    sortYearBtn.disabled = false;
+    sortTitleBtn.style.backgroundColor = selectedButtonColor;
+
+    sortDirectorBtn.style.backgroundColor = "#d80a48";
+    sortYearBtn.style.backgroundColor = "#d80a48";
 });
 
 
 sortDirectorBtn.addEventListener('click', function() {
     sortBy('director');
+    sortDirectorBtn.disabled = true;
+
+    sortTitleBtn.disabled = false;
+    sortYearBtn.disabled = false;
+    sortDirectorBtn.style.backgroundColor = selectedButtonColor;
+
+    sortTitleBtn.style.backgroundColor = "#d80a48";
+    sortYearBtn.style.backgroundColor = "#d80a48";
 });
 
 sortYearBtn.addEventListener('click', function() {
     sortBy('year');
+    sortYearBtn.disabled = true;
+
+    sortTitleBtn.disabled = false;
+    sortDirectorBtn.disabled = false;
+    sortYearBtn.style.backgroundColor = selectedButtonColor;
+
+    sortTitleBtn.style.backgroundColor = "#d80a48";
+    sortDirectorBtn.style.backgroundColor = "#d80a48";
 });
 
 searchBtn.addEventListener('click', function(){
@@ -116,10 +149,6 @@ function addAllToList(listOfMovies) {
                 child.year.toUpperCase().includes(searchValue));
         }
         
-        if(ascendOrder == false){
-            listOfMovies.reverse();
-        }
-        
         lastPage = Math.ceil(listOfMovies.length / 5);
         let startAt = currentPage * 5;
         let endAt = startAt + 5;
@@ -145,14 +174,8 @@ prevBtn.addEventListener('click', function() {
     }
 });
 
-ascendBtn.addEventListener('click', function() {
-    ascendOrder = true;
-    clearTheList();
-    addAllToList(listOfMovies);
-});
-
-descendBtn.addEventListener('click', function() {
-    ascendOrder = false;
+sortByBtn.addEventListener('click', function() {
+    listOfMovies.reverse();
     clearTheList();
     addAllToList(listOfMovies);
 });
