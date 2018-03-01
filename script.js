@@ -64,6 +64,7 @@ addButton.addEventListener('click', function() {
 });
 
 database.ref('/').on('value', function(data) {
+    addToArray(data);
     updateList();
 });
 
@@ -116,14 +117,14 @@ function sortBy(value) {
     updateList();
 }
 
+function sortThelist() {
+    listOfMovies.sort((a, b) => a[sortByChild].toLowerCase() > b[sortByChild].toLowerCase());
+}
+
 function updateList() {
-    database.ref('/')
-        .orderByChild(sortByChild)
-        .once('value',function(data){
-        clearTheList();
-        addToArray(data);
-        addAllToList(listOfMovies);
-    });
+    clearTheList();
+    sortThelist();
+    addAllToList(listOfMovies);
 }
 
 function addToArray(data) {
@@ -137,7 +138,6 @@ function addToArray(data) {
         }
         listOfMovies.push(movie);
     });
-    
 }
 
 function addAllToList(listOfMovies) {
